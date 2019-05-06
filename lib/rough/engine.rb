@@ -6,8 +6,8 @@ module Rough
 
   class Engine < Rails::Engine
 
-    initializer 'rough_engine.middleware' do |app|
-      app.middleware.insert_after ActionDispatch::ParamsParser, Rough::Middleware
+    initializer 'rough_engine.middleware', before: 'build_middleware_stack' do |app|
+      app.middleware.use Rough::Middleware
     end
 
   end

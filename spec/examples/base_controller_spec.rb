@@ -25,7 +25,7 @@ describe TestController, type: :request do
 
       before do
         allow(Rails.logger).to receive(:info)
-        post '/test-rpc', name: 'john'
+        post '/test-rpc', params: { name: 'john' }
       end
 
       it 'should pass back the response status' do
@@ -47,9 +47,11 @@ describe TestController, type: :request do
 
       before do
         allow(Rails.logger).to receive(:info)
-        post '/test-rpc', {
-          name: 'john'
-        }.to_json, 'Content-Type' => 'application/json', 'Accept' => 'application/json'
+        post(
+          '/test-rpc',
+          params: { name: 'john' }.to_json,
+          headers: { 'Content-Type' => 'application/json', 'Accept' => 'application/json' }
+        )
       end
 
       it 'should pass back the response status' do
@@ -75,7 +77,7 @@ describe TestController, type: :request do
 
       before do
         allow(Rails.logger).to receive(:info)
-        post '/test-rpc', echo_request.encode, 'Content-Type' => mime, 'Accept' => mime
+        post '/test-rpc', params: echo_request.encode, headers: { 'Content-Type' => mime, 'Accept' => mime }
       end
 
       it 'should pass back the underlying status' do
@@ -121,7 +123,7 @@ describe TestController, type: :request do
 
     before do
       allow(Rails.logger).to receive(:info)
-      post '/test-not-rpc', name: 'john'
+      post '/test-not-rpc', params: { name: 'john' }
     end
 
     it 'should pass back the response status' do
